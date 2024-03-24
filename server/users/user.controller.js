@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const User = require('./user.model');
@@ -11,11 +10,22 @@ connectDB();
 const createUser = async (req, res) => {
 
     const { username, password } = req.body;
-
+    console.log(req.body);
     const newUser = new User({ username, password });
 
     await newUser.save();
-    res.status(201).json({ message: 'User created successfully' });
+    res.status(200).json({ message: 'User created successfully' });
 }
 
-module.exports = { createUser };
+const findUser = async (username) => {
+
+    const user = await User.findOne({ username });
+
+    if (user) {
+        return user
+    } else {
+        return false;
+    }
+}
+
+module.exports = { createUser, findUser };

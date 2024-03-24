@@ -24,6 +24,10 @@
   padding: 10px;
   width: 50%;
 }
+.password__input {
+  padding: 10px;
+  width: 50%;
+}
 .home__cta {
   width: 200px;
   padding: 10px;
@@ -91,6 +95,9 @@
   overflow-y: scroll;
 }
 
+.message__container_hide {
+  display: none;
+}
 .message__container > * {
   margin-bottom: 10px;
 }

@@ -1,10 +1,10 @@
 const express = require("express")
 const bodyParser = require('body-parser');
 const connectDB = require("./database")
-const { route } = require("./users/user.route");
+const user = require("./users");
+const auth = require("./auth");
 const app = express()
 const cors = require("cors");
-const { constants } = require("buffer");
 const http = require('http').Server(app);
 const PORT = 4000
 const socketIO = require('socket.io')(http, {
@@ -14,7 +14,8 @@ const socketIO = require('socket.io')(http, {
 });
 app.use(bodyParser.json());
 app.use(cors())
-app.use("/api", route);
+app.use("/user", user);
+app.use("/auth", auth);
 connectDB();
 let users = []
 

@@ -1,39 +1,41 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Home = ({ socket }) => {
+const Login = ({ socket }) => {
 
     const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleRegister = async (e) => {
+    const handleLogin = async (e) => {
+
         e.preventDefault();
 
-        const response = await fetch('http://localhost:4000/user/register', {
+        const response = await fetch('http://localhost:4000/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ username: userName, password })
         });
+
         if (response.ok) {
+
+            const { token } = await response.json();
             // Handle success
-            localStorage.setItem('userName', userName);
+            localStorage.setItem('userName', token);
 
             // sends the username and socket ID to the Node.js server
             socket.emit('newUser', { userName, socketID: socket.id });
-            navigate('/login');
-            console.log('User registered successfully');
         } else {
             // Handle error
             console.error('Failed to register user');
         }
-
+        navigate('/chat');
     };
     return (
-        <form className="home__container" onSubmit={handleRegister}>
-            <h2 className="home__header">Sign up to Open Chat</h2>
+        <form className="home__container" onSubmit={handleLogin}>
+            <h2 className="home__header">Sign in to Open Chat</h2>
 
             <input
                 type="text"
@@ -54,9 +56,9 @@ const Home = ({ socket }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder='password'
             />
-            <button className="home__cta">SIGN UP</button>
+            <button className="home__cta">SIGN IN</button>
         </form>
     );
 };
 
-export default Home;
+export default Login;
