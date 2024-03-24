@@ -28,6 +28,17 @@ const findUser = async (username) => {
     }
 }
 
+const updateUserStatus = async (username, status) => {
+    try {
+
+        const user = await User.findOneAndUpdate({ username }, { status });
+
+        return user;
+    } catch (error) {
+
+    }
+}
+
 const fetchOnlineUser = async (req, res) => {
 
     const users = await User.find({ status: 'online' });
@@ -35,4 +46,4 @@ const fetchOnlineUser = async (req, res) => {
     res.status(200).json(users);
 }
 
-module.exports = { createUser, findUser, fetchOnlineUser };
+module.exports = { createUser, findUser, fetchOnlineUser, updateUserStatus };

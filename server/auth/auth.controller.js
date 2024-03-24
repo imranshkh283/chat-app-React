@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const User = require('../users/user.model');
-const { findUser } = require('../users/user.controller');
+const { findUser, updateUserStatus } = require('../users/user.controller');
 const { generateToken } = require('./token');
 
 const app = express();
@@ -21,10 +21,13 @@ const login = async (req, res) => {
                 id: user._id,
                 username: user.username,
             };
+
+            await User.findByIdAndUpdate(user._id, { status: 'online' });
+
             const token = await generateToken(payload);
+
             res.status(200).json({ token: token, message: 'Login successful' });
         } else {
-
             res.status(401).json({ message: 'Invalid credentials' });
         }
     }

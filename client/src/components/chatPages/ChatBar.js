@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-
+import { jwtDecode } from 'jwt-decode';
 const ChatBar = ({ socket }) => {
     const [users, setUsers] = useState();
+
+    const token = localStorage.getItem('userName');
+
+    const decodedToken = jwtDecode(token);
+    const { id } = decodedToken;
 
     const getOnlineUsers = async () => {
         const response = await fetch('http://localhost:4000/user/online', {
@@ -28,9 +33,15 @@ const ChatBar = ({ socket }) => {
             <div>
                 <h4 className="chat__header">ACTIVE USERS</h4>
                 <div className="chat__users">
-                    {users?.map((user) => (
-                        <p key={user._id}>{user.username}</p>
-                    ))}
+                    {users && users.length > 0 ? (
+                        users
+                            .filter((user) => user._id !== id)
+                            .map((user) => (
+                                <p key={user._id}>{user.username}</p>
+                            ))
+                    ) : (
+                        <p>No users available</p>
+                    )}
                 </div>
             </div>
         </div>

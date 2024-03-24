@@ -18,8 +18,9 @@ const ChatBody = ({ messages, typingStatus, lastMessageRef }) => {
             },
             body: JSON.stringify({ userId: id })
         });
+
         if (response.ok) {
-            console.log(id);
+
             navigate('/');
             window.location.reload();
         }
