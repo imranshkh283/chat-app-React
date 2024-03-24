@@ -10,8 +10,8 @@ connectDB();
 const createUser = async (req, res) => {
 
     const { username, password } = req.body;
-    console.log(req.body);
-    const newUser = new User({ username, password });
+
+    const newUser = new User({ username, password, status: 'online' });
 
     await newUser.save();
     res.status(200).json({ message: 'User created successfully' });
@@ -28,4 +28,11 @@ const findUser = async (username) => {
     }
 }
 
-module.exports = { createUser, findUser };
+const fetchOnlineUser = async (req, res) => {
+
+    const users = await User.find({ status: 'online' });
+
+    res.status(200).json(users);
+}
+
+module.exports = { createUser, findUser, fetchOnlineUser };

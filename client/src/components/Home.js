@@ -55,6 +55,8 @@ const Home = ({ socket }) => {
                 placeholder='password'
             />
             <button className="home__cta">SIGN UP</button>
+            <a href="/login" className="home__a">LOGIN</a>
+
         </form>
     );
 };

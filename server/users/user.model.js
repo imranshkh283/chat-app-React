@@ -9,6 +9,11 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    status: {
+        type: String,
+        enum: ['online', 'offline'],
+        default: 'offline',
     }
 })
 
