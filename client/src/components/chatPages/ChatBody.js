@@ -1,14 +1,29 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { jwtDecode } from 'jwt-decode';
 const ChatBody = ({ messages, typingStatus, lastMessageRef }) => {
 
     const navigate = useNavigate();
 
-    const handleLeaveChat = () => {
-        localStorage.removeItem('userName');
-        navigate('/');
-        window.location.reload();
+    const handleLeaveChat = async () => {
+        // localStorage.removeItem('userName');
+        const token = localStorage.getItem('userName');
+
+        const decodedToken = jwtDecode(token);
+        const { id } = decodedToken;
+        const response = await fetch('http://localhost:4000/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId: id })
+        });
+        if (response.ok) {
+            console.log(id);
+            navigate('/');
+            window.location.reload();
+        }
+
     };
 
     return (

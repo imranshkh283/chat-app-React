@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 
 const login = async (req, res) => {
-    const { username, password } = req.body
+    const { username, password } = req.body;
 
     const user = await findUser(username);
 
@@ -30,4 +30,22 @@ const login = async (req, res) => {
     }
 }
 
-module.exports = { login };
+const logout = async (req, res) => {
+
+    const { userId } = req.body;
+
+    const user = await User.findById(userId);
+
+    if (user) {
+
+        await User.findByIdAndUpdate(userId, { status: 'offline' });
+
+        res.status(200).json({ message: 'Logout successful' });
+
+    } else {
+
+    }
+}
+
+
+module.exports = { login, logout };
